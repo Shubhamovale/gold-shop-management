@@ -3,146 +3,136 @@
 <head>
     <title>Login</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px; /* Prevents box touching screen edges on mobile */
+    }
 
-        .container {
-            width: 100%;
-            max-width: 420px;
-            padding: 40px;
-        }
+    .container {
+        width: 100%;
+        max-width: 420px; /* Keeps it from getting too wide on desktop */
+    }
 
+    .login-box {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        padding: 8% 10%; /* Responsive internal spacing */
+        animation: slideIn 0.5s ease-out;
+        width: 100%;
+    }
+
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 1.5rem;
+        font-size: clamp(20px, 5vw, 28px); /* Scales font based on screen size */
+        font-weight: 600;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    /* Django's form.as_p targets p tags */
+    form p {
+        margin-bottom: 15px;
+        width: 100%;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+        font-weight: 500;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    input {
+        width: 100%; /* Ensures inputs fill the container */
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 16px; /* 16px prevents iOS zoom-on-focus */
+        transition: all 0.3s ease;
+        background: #f9f9f9;
+    }
+
+    input:focus {
+        outline: none;
+        border-color: #667eea;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    /* Mobile specific adjustments */
+    @media (max-width: 480px) {
         .login-box {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 50px 40px;
-            animation: slideIn 0.5s ease-out;
+            padding: 30px 20px;
         }
+        
+        .container {
+            padding: 0 10px;
+        }
+    }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .errorlist {
+        color: #e74c3c;
+        font-size: 13px;
+        margin-bottom: 15px;
+        list-style: none;
+        background: #fadbd8;
+        padding: 10px;
+        border-radius: 6px;
+        border-left: 4px solid #e74c3c;
+    }
 
-        h2 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 28px;
-            font-weight: 600;
-        }
+    .helptext { display: none; }
+</style>
 
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: 500;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        input[type="text"],
-        input[type="password"],
-        input[type="email"] {
-            padding: 14px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background: #f9f9f9;
-        }
-
-        input[type="text"]:focus,
-        input[type="password"]:focus,
-        input[type="email"]:focus {
-            outline: none;
-            border-color: #667eea;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        input::placeholder {
-            color: #aaa;
-        }
-
-        button {
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        .errorlist {
-            color: #e74c3c;
-            font-size: 13px;
-            margin-bottom: 15px;
-            list-style: none;
-            background: #fadbd8;
-            padding: 12px;
-            border-radius: 6px;
-            border-left: 4px solid #e74c3c;
-        }
-
-        .errorlist li {
-            margin: 4px 0;
-        }
-
-        ul {
-            list-style: none;
-        }
-
-        .helptext {
-            display: none;
-        }
-    </style>
 </head>
 <body>
 

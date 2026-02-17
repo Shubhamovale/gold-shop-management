@@ -5,49 +5,63 @@
     :root {
         --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
+
+    /* Universal box-sizing for consistent width calculation */
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
     .auth-wrapper {
-        min-height: 90vh;
+        min-height: 100vh; /* Full viewport height */
         display: flex;
         align-items: center;
         justify-content: center;
         background: var(--primary-gradient);
         font-family: 'Inter', system-ui, sans-serif;
+        padding: 5%; /* Responsive gutter for mobile */
     }
+
     .register-card {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(10px);
-        padding: 40px;
+        padding: clamp(20px, 8%, 40px); /* Adjusts padding based on screen size */
         border-radius: 16px;
         box-shadow: 0 15px 35px rgba(0,0,0,0.2);
         width: 100%;
-        max-width: 420px;
+        max-width: 420px; /* Prevents card from getting too wide on laptops */
     }
+
     .register-card h2 {
         text-align: center;
         margin-bottom: 25px;
         color: #1a202c;
         font-weight: 700;
         letter-spacing: -0.5px;
+        font-size: clamp(1.5rem, 5vw, 2rem); /* Fluid typography */
     }
-    /* Style Django's form p tags */
+
     .register-card p {
         margin-bottom: 15px;
         color: #4a5568;
+        width: 100%;
     }
+
     .register-card input {
         width: 100%;
         padding: 12px;
         border: 1.5px solid #e2e8f0;
         border-radius: 8px;
         margin-top: 6px;
+        font-size: 16px; /* Prevents auto-zoom on mobile safari */
         transition: border-color 0.2s;
-        box-sizing: border-box; /* Prevents overflow */
     }
+
     .register-card input:focus {
         outline: none;
         border-color: #667eea;
         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
+
     .btn-register {
         width: 100%;
         padding: 14px;
@@ -56,25 +70,39 @@
         border: none;
         border-radius: 8px;
         font-weight: 600;
+        font-size: 1rem;
         cursor: pointer;
         margin-top: 10px;
-        transition: transform 0.1s;
+        transition: transform 0.1s, box-shadow 0.2s;
+        text-transform: uppercase;
     }
+
     .btn-register:active {
         transform: scale(0.98);
     }
+
     .login-footer {
         text-align: center;
         margin-top: 20px;
         font-size: 0.9rem;
         color: #718096;
+        line-height: 1.5;
     }
+
     .login-footer a {
         color: #667eea;
         text-decoration: none;
         font-weight: 600;
     }
+
+    /* Extra small screens fix */
+    @media (max-width: 350px) {
+        .register-card {
+            padding: 15px;
+        }
+    }
 </style>
+
 
 <div class="auth-wrapper">
     <div class="register-card">
