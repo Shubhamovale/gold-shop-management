@@ -1,12 +1,95 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Register</h2>
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .auth-wrapper {
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--primary-gradient);
+        font-family: 'Inter', system-ui, sans-serif;
+    }
+    .register-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        width: 100%;
+        max-width: 420px;
+    }
+    .register-card h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #1a202c;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+    /* Style Django's form p tags */
+    .register-card p {
+        margin-bottom: 15px;
+        color: #4a5568;
+    }
+    .register-card input {
+        width: 100%;
+        padding: 12px;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 8px;
+        margin-top: 6px;
+        transition: border-color 0.2s;
+        box-sizing: border-box; /* Prevents overflow */
+    }
+    .register-card input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    .btn-register {
+        width: 100%;
+        padding: 14px;
+        background: var(--primary-gradient);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: transform 0.1s;
+    }
+    .btn-register:active {
+        transform: scale(0.98);
+    }
+    .login-footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 0.9rem;
+        color: #718096;
+    }
+    .login-footer a {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+    }
+</style>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Register</button>
-</form>
+<div class="auth-wrapper">
+    <div class="register-card">
+        <h2>Create Account</h2>
 
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-register">Register</button>
+        </form>
+
+        <div class="login-footer">
+            Already have an account? 
+            <a href="{% url 'login' %}">Login here</a>
+        </div>
+    </div>
+</div>
 {% endblock %}
