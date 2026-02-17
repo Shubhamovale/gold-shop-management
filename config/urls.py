@@ -19,18 +19,17 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('users.urls')),
-    # Web App Routes
+
+    # HOMEPAGE → LOGIN PAGE
+    path('', auth_views.LoginView.as_view(template_name='login.html'), name='home'),
+
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+
+    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+
+    path('register/', include('users.urls')),
+
     path('inventory/', include('inventory.urls')),
 
-    # API Routes
-    path('api/inventory/', include('inventory.urls')),
-
-    # Authentication Routes
-    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-
-    # DRF Login for Browsable API
-    path('api-auth/', include('rest_framework.urls')),
+    path('admin/', admin.site.urls),
 ]
