@@ -150,12 +150,20 @@
     <div class="login-box">
         <h2>Login</h2>
         
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Login</button>
-            <button type="register">onclick="window.location.href='https://gold-shop-management-1.onrender.com/register/';"Login</button>
-        </form>
+       <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    
+    <!-- Login Button -->
+    <button type="submit">Login</button>
+    
+    <!-- Register Button -->
+    <button type="button" 
+            onclick="window.location.href='https://gold-shop-management-1.onrender.com/register/';" 
+            style="background: #ccc; color: #333; margin-top: 15px;">
+        Register
+    </button>
+</form>
     </div>
 </div>
 
