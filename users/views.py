@@ -1,3 +1,4 @@
+#users/views.py
 from django.shortcuts import render, redirect
 from .forms import RegisterForm
 from django.contrib.auth.models import Group
