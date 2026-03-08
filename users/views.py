@@ -14,7 +14,7 @@ def register_view(request):
             user = form.save()
 
             # GET STAFF GROUP
-            staff_group = Group.objects.get(name='Staff')
+            staff_group, created = Group.objects.get_or_create(name='Staff')
 
             # ASSIGN USER TO STAFF GROUP
             user.groups.add(staff_group)
