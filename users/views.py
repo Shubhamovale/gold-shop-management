@@ -1,22 +1,17 @@
-#users/views.py
 from django.shortcuts import render, redirect
 from .forms import RegisterForm
 from django.contrib.auth.models import Group
-
 
 def register_view(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
 
         if form.is_valid():
-
-            # SAVE USER AND STORE IN VARIABLE
             user = form.save()
 
-            # GET STAFF GROUP
+            # GET OR CREATE STAFF GROUP (won't crash if missing)
             staff_group, created = Group.objects.get_or_create(name='Staff')
 
-            # ASSIGN USER TO STAFF GROUP
             user.groups.add(staff_group)
 
             return redirect('login')
