@@ -562,6 +562,14 @@
                     Register once, then sign in to manage inventory and daily store operations.
                 </p>
 
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="error-panel" style="margin-bottom: 12px; color: var(--text-main); border-color: var(--surface-border); background: rgba(255,255,255,0.35);">
+                        <div>{{ message }}</div>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+
                 {% if form.errors %}
                 <div class="error-panel">
                     <strong>Please fix the following</strong>

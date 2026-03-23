@@ -33,3 +33,16 @@ class RegisterForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class OTPVerificationForm(forms.Form):
+    otp = forms.CharField(
+        max_length=6,
+        min_length=6,
+        label='Email OTP',
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Enter 6-digit OTP',
+            'inputmode': 'numeric',
+            'autocomplete': 'one-time-code',
+        })
+    )

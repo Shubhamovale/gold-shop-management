@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gold Shop | Login</title>
+    <title>Gold Shop | Verify Email</title>
     <link rel="icon" type="image/svg+xml" href="{% static 'logo.svg' %}">
     <style>
         :root {
             --bg: #f6f0e6;
             --bg-accent: rgba(219, 126, 79, 0.12);
             --bg-accent-strong: rgba(162, 117, 62, 0.18);
-            --surface: rgba(255, 251, 245, 0.88);
+            --surface: rgba(255, 251, 245, 0.9);
             --surface-border: rgba(108, 83, 53, 0.09);
             --surface-shadow: 0 28px 60px rgba(92, 68, 38, 0.16);
             --text-main: #201813;
@@ -33,13 +33,16 @@
             --nav-pill: rgba(255, 248, 241, 0.82);
             --nav-button: #d16d3d;
             --nav-button-text: #fff6ed;
+            --error-bg: rgba(210, 67, 50, 0.09);
+            --error-border: rgba(210, 67, 50, 0.16);
+            --error-text: #b1392a;
         }
 
         body.dark-mode {
             --bg: #16181f;
             --bg-accent: rgba(123, 90, 255, 0.14);
             --bg-accent-strong: rgba(63, 146, 255, 0.12);
-            --surface: rgba(24, 28, 40, 0.9);
+            --surface: rgba(24, 28, 40, 0.92);
             --surface-border: rgba(135, 153, 198, 0.14);
             --surface-shadow: 0 28px 60px rgba(0, 0, 0, 0.42);
             --text-main: #f7f0e6;
@@ -61,6 +64,9 @@
             --nav-pill: rgba(20, 24, 36, 0.82);
             --nav-button: #d88253;
             --nav-button-text: #fff5e8;
+            --error-bg: rgba(210, 67, 50, 0.12);
+            --error-border: rgba(255, 120, 110, 0.2);
+            --error-text: #ffb1a8;
         }
 
         * {
@@ -95,32 +101,6 @@
             isolation: isolate;
         }
 
-        .page-shell::before,
-        .page-shell::after {
-            content: "";
-            position: absolute;
-            border-radius: 999px;
-            filter: blur(8px);
-            z-index: -1;
-            opacity: 0.9;
-        }
-
-        .page-shell::before {
-            width: 420px;
-            height: 420px;
-            top: -160px;
-            left: -120px;
-            background: radial-gradient(circle, rgba(255, 210, 159, 0.36), transparent 68%);
-        }
-
-        .page-shell::after {
-            width: 360px;
-            height: 360px;
-            right: -120px;
-            bottom: -90px;
-            background: radial-gradient(circle, rgba(210, 139, 100, 0.2), transparent 66%);
-        }
-
         .topbar {
             width: min(1120px, 100%);
             margin: 0 auto;
@@ -146,7 +126,6 @@
             flex-wrap: wrap;
         }
 
-        .mode-chip,
         .nav-link,
         .nav-cta {
             border-radius: 999px;
@@ -160,7 +139,6 @@
             border: 1px solid transparent;
         }
 
-        .mode-chip,
         .nav-link {
             background: var(--nav-pill);
             border-color: var(--surface-border);
@@ -187,12 +165,6 @@
             cursor: pointer;
             position: relative;
             backdrop-filter: blur(14px);
-            transition: all 0.35s ease;
-        }
-
-        .theme-toggle:focus-visible {
-            outline: 3px solid rgba(213, 109, 59, 0.2);
-            outline-offset: 3px;
         }
 
         .toggle-knob {
@@ -239,19 +211,18 @@
             width: min(1120px, 100%);
             margin: 0 auto;
             display: grid;
-            grid-template-columns: minmax(300px, 1.05fr) minmax(360px, 420px);
+            grid-template-columns: minmax(300px, 1.02fr) minmax(360px, 430px);
             gap: 48px;
             align-items: center;
             min-height: calc(100vh - 132px);
         }
 
-        .hero-copy {
-            padding: 40px 0 56px;
-            align-self: stretch;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
+        .hero-copy h1 {
+            font-size: clamp(42px, 7vw, 76px);
+            line-height: 0.96;
+            max-width: 620px;
+            margin-bottom: 18px;
+            letter-spacing: -0.04em;
         }
 
         .eyebrow {
@@ -262,45 +233,16 @@
             margin-bottom: 18px;
         }
 
-        .hero-copy h1 {
-            font-size: clamp(42px, 7vw, 80px);
-            line-height: 0.96;
-            max-width: 620px;
-            margin-bottom: 18px;
-            letter-spacing: -0.04em;
-        }
-
         .hero-copy p {
             max-width: 540px;
             font-size: 18px;
             line-height: 1.65;
             color: var(--text-muted);
-            margin-bottom: 30px;
+            margin-bottom: 22px;
         }
 
-        .feature-row {
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-            margin-bottom: 34px;
-        }
-
-        .feature-pill {
-            padding: 12px 16px;
-            border-radius: 999px;
-            border: 1px solid var(--surface-border);
-            background: rgba(255, 255, 255, 0.38);
-            backdrop-filter: blur(10px);
-            color: var(--text-main);
-            font-size: 14px;
-        }
-
-        body.dark-mode .feature-pill {
-            background: rgba(20, 24, 36, 0.42);
-        }
-
-        .hero-panel {
-            width: min(420px, 100%);
+        .auth-panel {
+            width: min(430px, 100%);
             padding: 28px;
             border-radius: 28px;
             background: var(--surface);
@@ -323,8 +265,8 @@
             margin-bottom: 12px;
         }
 
-        .hero-panel h2 {
-            font-size: clamp(34px, 4vw, 46px);
+        .auth-panel h2 {
+            font-size: clamp(32px, 4vw, 44px);
             line-height: 0.94;
             letter-spacing: -0.04em;
             margin-bottom: 14px;
@@ -337,16 +279,17 @@
             margin-bottom: 22px;
         }
 
+        .note {
+            margin-bottom: 16px;
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
         form {
             display: flex;
             flex-direction: column;
             gap: 16px;
-        }
-
-        form p {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
         }
 
         label {
@@ -354,11 +297,11 @@
             font-size: 13px;
             letter-spacing: 0.04em;
             text-transform: uppercase;
+            display: block;
+            margin-bottom: 8px;
         }
 
-        input[type="text"],
-        input[type="password"],
-        input[type="email"] {
+        input[type="text"] {
             width: 100%;
             padding: 16px 18px;
             border-radius: 16px;
@@ -370,18 +313,26 @@
             transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
         }
 
-        input[type="text"]:focus,
-        input[type="password"]:focus,
-        input[type="email"]:focus {
+        input[type="text"]:focus {
             border-color: var(--input-focus);
             box-shadow: 0 0 0 4px rgba(213, 109, 59, 0.12);
             background: rgba(255, 255, 255, 0.92);
         }
 
-        body.dark-mode input[type="text"]:focus,
-        body.dark-mode input[type="password"]:focus,
-        body.dark-mode input[type="email"]:focus {
-            background: rgba(12, 16, 26, 0.88);
+        ul.errorlist,
+        .info-panel {
+            list-style: none;
+            padding: 13px 14px;
+            border-radius: 16px;
+            border: 1px solid var(--surface-border);
+            background: rgba(255,255,255,0.35);
+            color: var(--text-main);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .info-panel {
+            margin-bottom: 8px;
         }
 
         .submit-button,
@@ -402,7 +353,6 @@
             background: var(--button-bg);
             color: var(--button-text);
             box-shadow: var(--button-shadow);
-            margin-top: 6px;
         }
 
         .secondary-button {
@@ -410,52 +360,10 @@
             color: var(--secondary-text);
         }
 
-        .submit-button:hover,
-        .secondary-button:hover,
-        .nav-cta:hover,
-        .nav-link:hover,
-        .mode-chip:hover {
-            transform: translateY(-1px);
-        }
-
-        .panel-footer {
-            margin-top: 14px;
-            color: var(--text-muted);
-            font-size: 15px;
-        }
-
-        .panel-footer a {
-            color: var(--text-main);
-            text-decoration: none;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-        }
-
-        body.dark-mode .panel-footer a {
-            border-bottom-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .errorlist {
-            list-style: none;
-            padding: 13px 14px;
-            border-radius: 16px;
-            background: rgba(210, 67, 50, 0.09);
-            border: 1px solid rgba(210, 67, 50, 0.16);
-            color: #b1392a;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-        body.dark-mode .errorlist {
-            background: rgba(210, 67, 50, 0.12);
-            color: #ffb1a8;
-        }
-
-        ul {
-            list-style: none;
-        }
-
-        .helptext {
-            display: none;
+        .button-row {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         @media (max-width: 980px) {
@@ -463,16 +371,6 @@
                 grid-template-columns: 1fr;
                 gap: 24px;
                 min-height: auto;
-                padding-bottom: 18px;
-            }
-
-            .hero-copy {
-                padding: 12px 0 0;
-            }
-
-            .hero-panel {
-                justify-self: stretch;
-                max-width: 520px;
             }
         }
 
@@ -485,27 +383,6 @@
                 align-items: flex-start;
                 flex-direction: column;
                 padding-bottom: 22px;
-            }
-
-            .topbar-actions {
-                width: 100%;
-            }
-
-            .hero-copy h1 {
-                font-size: 42px;
-            }
-
-            .hero-copy p {
-                font-size: 16px;
-            }
-
-            .hero-panel {
-                padding: 18px;
-                border-radius: 24px;
-            }
-
-            .panel-inner {
-                padding: 10px 8px 6px;
             }
         }
     </style>
@@ -532,48 +409,42 @@
 
     <main class="hero">
         <section class="hero-copy">
-            <div class="eyebrow">Welcome Back</div>
-            <h1>Run your gold shop from one calm workspace.</h1>
+            <div class="eyebrow">Email Verification</div>
+            <h1>Confirm your Gmail OTP.</h1>
             <p>
-                Track inventory, monitor daily activity, and move from counter work to reporting
-                without jumping between scattered screens.
+                We sent a six-digit verification code to your email. Enter it here to activate
+                your staff account securely.
             </p>
-            <div class="feature-row">
-                <span class="feature-pill">Inventory overview</span>
-                <span class="feature-pill">Daily dashboard</span>
-                <span class="feature-pill">Fast staff access</span>
-            </div>
         </section>
 
-        <section class="hero-panel">
+        <section class="auth-panel">
             <div class="panel-inner">
-                <div class="form-eyebrow">Workspace Login</div>
-                <h2>Enter your dashboard.</h2>
+                <div class="form-eyebrow">Verify Email</div>
+                <h2>Finish registration.</h2>
                 <p class="panel-text">
-                    Sign in to manage stock, updates, and daily operations from one place.
+                    Enter the OTP sent to <strong>{{ pending_email }}</strong>. The code expires in
+                    {{ otp_expiry_minutes }} minutes.
                 </p>
 
                 {% if messages %}
                     {% for message in messages %}
-                    <div class="error-panel" style="margin-bottom: 12px; color: var(--text-main); border-color: var(--surface-border); background: rgba(255,255,255,0.35);">
-                        <div>{{ message }}</div>
-                    </div>
+                    <div class="info-panel">{{ message }}</div>
                     {% endfor %}
                 {% endif %}
+
+                <div class="note">
+                    Didn’t receive it? Check spam, then use resend to generate a fresh OTP.
+                </div>
 
                 <form method="post">
                     {% csrf_token %}
                     {{ form.as_p }}
 
-                    <button type="submit" class="submit-button">Login</button>
-                    <button type="button" class="secondary-button" onclick="window.location.href='{% url 'register' %}';">
-                        Register
-                    </button>
+                    <div class="button-row">
+                        <button type="submit" class="submit-button">Verify OTP</button>
+                        <button type="submit" name="action" value="resend" class="secondary-button">Resend OTP</button>
+                    </div>
                 </form>
-
-                <p class="panel-footer">
-                    Need an account? <a href="{% url 'register' %}">Create one.</a>
-                </p>
             </div>
         </section>
     </main>
