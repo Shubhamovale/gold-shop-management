@@ -8,6 +8,8 @@ def register_view(request):
 
         if form.is_valid():
             user = form.save()
+            user.role = 'staff'
+            user.save(update_fields=['role'])
 
             # GET OR CREATE STAFF GROUP (won't crash if missing)
             staff_group, created = Group.objects.get_or_create(name='Staff')

@@ -1,8 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
+        :root {
+            --bg: #f6f0e6;
+            --bg-accent: rgba(219, 126, 79, 0.12);
+            --bg-accent-strong: rgba(162, 117, 62, 0.18);
+            --surface: rgba(255, 251, 245, 0.88);
+            --surface-border: rgba(108, 83, 53, 0.09);
+            --surface-shadow: 0 28px 60px rgba(92, 68, 38, 0.16);
+            --text-main: #201813;
+            --text-muted: #6f5c49;
+            --text-soft: #a38768;
+            --input-bg: rgba(255, 255, 255, 0.72);
+            --input-border: #e6d7c3;
+            --input-focus: #d56d3b;
+            --button-bg: #16120f;
+            --button-text: #f7f0e6;
+            --button-shadow: 0 16px 30px rgba(22, 18, 15, 0.24);
+            --secondary-bg: rgba(227, 205, 179, 0.45);
+            --secondary-text: #3f2f22;
+            --toggle-bg: rgba(255, 255, 255, 0.7);
+            --toggle-border: rgba(121, 87, 50, 0.15);
+            --toggle-knob: #ffffff;
+            --toggle-icon-active: #7f4c22;
+            --toggle-icon-muted: #b99e7f;
+            --nav-pill: rgba(255, 248, 241, 0.82);
+            --nav-button: #d16d3d;
+            --nav-button-text: #fff6ed;
+        }
+
+        body.dark-mode {
+            --bg: #16181f;
+            --bg-accent: rgba(123, 90, 255, 0.14);
+            --bg-accent-strong: rgba(63, 146, 255, 0.12);
+            --surface: rgba(24, 28, 40, 0.9);
+            --surface-border: rgba(135, 153, 198, 0.14);
+            --surface-shadow: 0 28px 60px rgba(0, 0, 0, 0.42);
+            --text-main: #f7f0e6;
+            --text-muted: #b7bfd3;
+            --text-soft: #d0a888;
+            --input-bg: rgba(13, 17, 28, 0.72);
+            --input-border: #313c54;
+            --input-focus: #f0a45d;
+            --button-bg: linear-gradient(135deg, #f0a45d 0%, #ce6b4e 100%);
+            --button-text: #1d140f;
+            --button-shadow: 0 16px 30px rgba(206, 107, 78, 0.24);
+            --secondary-bg: rgba(38, 47, 69, 0.82);
+            --secondary-text: #ece2d6;
+            --toggle-bg: rgba(16, 22, 34, 0.78);
+            --toggle-border: rgba(240, 164, 93, 0.24);
+            --toggle-knob: #f0a45d;
+            --toggle-icon-active: #fff3df;
+            --toggle-icon-muted: #7d88a6;
+            --nav-pill: rgba(20, 24, 36, 0.82);
+            --nav-button: #d88253;
+            --nav-button-text: #fff5e8;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -10,129 +68,384 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            font-family: Georgia, "Times New Roman", serif;
+            background:
+                radial-gradient(circle at top left, var(--bg-accent-strong), transparent 32%),
+                radial-gradient(circle at right center, var(--bg-accent), transparent 28%),
+                linear-gradient(135deg, var(--bg) 0%, #f8f3ea 100%);
+            color: var(--text-main);
+            transition: background 0.35s ease, color 0.35s ease;
+            overflow-x: hidden;
+        }
+
+        body.dark-mode {
+            background:
+                radial-gradient(circle at top left, var(--bg-accent-strong), transparent 34%),
+                radial-gradient(circle at right center, var(--bg-accent), transparent 30%),
+                linear-gradient(135deg, #11141d 0%, var(--bg) 100%);
+        }
+
+        .page-shell {
+            min-height: 100vh;
+            padding: 28px 36px 40px;
+            position: relative;
+            isolation: isolate;
+        }
+
+        .page-shell::before,
+        .page-shell::after {
+            content: "";
+            position: absolute;
+            border-radius: 999px;
+            filter: blur(8px);
+            z-index: -1;
+            opacity: 0.9;
+        }
+
+        .page-shell::before {
+            width: 420px;
+            height: 420px;
+            top: -160px;
+            left: -120px;
+            background: radial-gradient(circle, rgba(255, 210, 159, 0.36), transparent 68%);
+        }
+
+        .page-shell::after {
+            width: 360px;
+            height: 360px;
+            right: -120px;
+            bottom: -90px;
+            background: radial-gradient(circle, rgba(210, 139, 100, 0.2), transparent 66%);
+        }
+
+        .topbar {
+            width: min(1120px, 100%);
+            margin: 0 auto;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding-bottom: 28px;
         }
 
-        .container {
-            width: 100%;
-            max-width: 420px;
-            padding: 40px;
+        .brand {
+            font-size: 18px;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: var(--text-main);
+            text-decoration: none;
         }
 
-        .login-box {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 50px 40px;
-            animation: slideIn 0.5s ease-out;
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .mode-chip,
+        .nav-link,
+        .nav-cta {
+            border-radius: 999px;
+            padding: 10px 16px;
+            font-size: 14px;
+            line-height: 1;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid transparent;
         }
 
-        h2 {
-            text-align: center;
-            color: #333;
+        .mode-chip,
+        .nav-link {
+            background: var(--nav-pill);
+            border-color: var(--surface-border);
+            color: var(--text-main);
+            backdrop-filter: blur(14px);
+        }
+
+        .nav-cta {
+            background: var(--nav-button);
+            color: var(--nav-button-text);
+            box-shadow: 0 10px 24px rgba(209, 109, 61, 0.22);
+        }
+
+        .theme-toggle {
+            width: 82px;
+            height: 40px;
+            border-radius: 999px;
+            border: 1px solid var(--toggle-border);
+            background: var(--toggle-bg);
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 10px;
+            cursor: pointer;
+            position: relative;
+            backdrop-filter: blur(14px);
+            transition: all 0.35s ease;
+        }
+
+        .theme-toggle:focus-visible {
+            outline: 3px solid rgba(213, 109, 59, 0.2);
+            outline-offset: 3px;
+        }
+
+        .toggle-knob {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--toggle-knob);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+            transition: transform 0.35s ease, background 0.35s ease;
+        }
+
+        body.dark-mode .toggle-knob {
+            transform: translateX(42px);
+        }
+
+        .toggle-icon {
+            position: relative;
+            z-index: 1;
+            font-size: 15px;
+            user-select: none;
+            transition: color 0.35s ease;
+        }
+
+        .toggle-icon.sun {
+            color: var(--toggle-icon-active);
+        }
+
+        .toggle-icon.moon {
+            color: var(--toggle-icon-muted);
+        }
+
+        body.dark-mode .toggle-icon.sun {
+            color: var(--toggle-icon-muted);
+        }
+
+        body.dark-mode .toggle-icon.moon {
+            color: var(--toggle-icon-active);
+        }
+
+        .hero {
+            width: min(1120px, 100%);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: minmax(300px, 1.05fr) minmax(360px, 420px);
+            gap: 48px;
+            align-items: center;
+            min-height: calc(100vh - 132px);
+        }
+
+        .hero-copy {
+            padding: 40px 0 56px;
+            align-self: stretch;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .eyebrow {
+            font-size: 12px;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--text-soft);
+            margin-bottom: 18px;
+        }
+
+        .hero-copy h1 {
+            font-size: clamp(42px, 7vw, 80px);
+            line-height: 0.96;
+            max-width: 620px;
+            margin-bottom: 18px;
+            letter-spacing: -0.04em;
+        }
+
+        .hero-copy p {
+            max-width: 540px;
+            font-size: 18px;
+            line-height: 1.65;
+            color: var(--text-muted);
             margin-bottom: 30px;
-            font-size: 28px;
-            font-weight: 600;
+        }
+
+        .feature-row {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 34px;
+        }
+
+        .feature-pill {
+            padding: 12px 16px;
+            border-radius: 999px;
+            border: 1px solid var(--surface-border);
+            background: rgba(255, 255, 255, 0.38);
+            backdrop-filter: blur(10px);
+            color: var(--text-main);
+            font-size: 14px;
+        }
+
+        body.dark-mode .feature-pill {
+            background: rgba(20, 24, 36, 0.42);
+        }
+
+        .hero-panel {
+            width: min(420px, 100%);
+            padding: 28px;
+            border-radius: 28px;
+            background: var(--surface);
+            border: 1px solid var(--surface-border);
+            box-shadow: var(--surface-shadow);
+            backdrop-filter: blur(18px);
+            justify-self: end;
+        }
+
+        .panel-inner {
+            border-radius: 22px;
+            padding: 22px 20px 18px;
+        }
+
+        .form-eyebrow {
+            font-size: 11px;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            color: var(--text-soft);
+            margin-bottom: 12px;
+        }
+
+        .hero-panel h2 {
+            font-size: clamp(34px, 4vw, 46px);
+            line-height: 0.94;
+            letter-spacing: -0.04em;
+            margin-bottom: 14px;
+        }
+
+        .panel-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 22px;
         }
 
         form {
             display: flex;
             flex-direction: column;
+            gap: 16px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
+        form p {
             display: flex;
             flex-direction: column;
+            gap: 8px;
         }
 
         label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: 500;
-            font-size: 14px;
+            color: var(--text-main);
+            font-size: 13px;
+            letter-spacing: 0.04em;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         input[type="text"],
         input[type="password"],
         input[type="email"] {
-            padding: 14px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            width: 100%;
+            padding: 16px 18px;
+            border-radius: 16px;
+            border: 1px solid var(--input-border);
+            background: var(--input-bg);
+            color: var(--text-main);
             font-size: 16px;
-            transition: all 0.3s ease;
-            background: #f9f9f9;
+            outline: none;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
         }
 
         input[type="text"]:focus,
         input[type="password"]:focus,
         input[type="email"]:focus {
-            outline: none;
-            border-color: #667eea;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 4px rgba(213, 109, 59, 0.12);
+            background: rgba(255, 255, 255, 0.92);
         }
 
-        input::placeholder {
-            color: #aaa;
+        body.dark-mode input[type="text"]:focus,
+        body.dark-mode input[type="password"]:focus,
+        body.dark-mode input[type="email"]:focus {
+            background: rgba(12, 16, 26, 0.88);
         }
 
-        button {
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+        .submit-button,
+        .secondary-button {
+            width: 100%;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
+            border-radius: 999px;
+            padding: 16px 20px;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
         }
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        .submit-button {
+            background: var(--button-bg);
+            color: var(--button-text);
+            box-shadow: var(--button-shadow);
+            margin-top: 6px;
         }
 
-        button:active {
-            transform: translateY(0);
+        .secondary-button {
+            background: var(--secondary-bg);
+            color: var(--secondary-text);
+        }
+
+        .submit-button:hover,
+        .secondary-button:hover,
+        .nav-cta:hover,
+        .nav-link:hover,
+        .mode-chip:hover {
+            transform: translateY(-1px);
+        }
+
+        .panel-footer {
+            margin-top: 14px;
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        .panel-footer a {
+            color: var(--text-main);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+        }
+
+        body.dark-mode .panel-footer a {
+            border-bottom-color: rgba(255, 255, 255, 0.2);
         }
 
         .errorlist {
-            color: #e74c3c;
-            font-size: 13px;
-            margin-bottom: 15px;
             list-style: none;
-            background: #fadbd8;
-            padding: 12px;
-            border-radius: 6px;
-            border-left: 4px solid #e74c3c;
+            padding: 13px 14px;
+            border-radius: 16px;
+            background: rgba(210, 67, 50, 0.09);
+            border: 1px solid rgba(210, 67, 50, 0.16);
+            color: #b1392a;
+            font-size: 13px;
+            line-height: 1.5;
         }
 
-        .errorlist li {
-            margin: 4px 0;
+        body.dark-mode .errorlist {
+            background: rgba(210, 67, 50, 0.12);
+            color: #ffb1a8;
         }
 
         ul {
@@ -142,31 +455,143 @@
         .helptext {
             display: none;
         }
+
+        @media (max-width: 980px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                min-height: auto;
+                padding-bottom: 18px;
+            }
+
+            .hero-copy {
+                padding: 12px 0 0;
+            }
+
+            .hero-panel {
+                justify-self: stretch;
+                max-width: 520px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .page-shell {
+                padding: 20px 18px 28px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+                padding-bottom: 22px;
+            }
+
+            .topbar-actions {
+                width: 100%;
+            }
+
+            .hero-copy h1 {
+                font-size: 42px;
+            }
+
+            .hero-copy p {
+                font-size: 16px;
+            }
+
+            .hero-panel {
+                padding: 18px;
+                border-radius: 24px;
+            }
+
+            .panel-inner {
+                padding: 10px 8px 6px;
+            }
+        }
     </style>
 </head>
 <body>
+<div class="page-shell">
+    <header class="topbar">
+        <a class="brand" href="{% url 'login' %}">Gold Studio</a>
+        <div class="topbar-actions">
+            <button
+                type="button"
+                class="theme-toggle"
+                id="themeToggle"
+                aria-label="Toggle dark mode"
+                aria-pressed="false">
+                <span class="toggle-icon sun" aria-hidden="true">☀</span>
+                <span class="toggle-icon moon" aria-hidden="true">☾</span>
+                <span class="toggle-knob" aria-hidden="true"></span>
+            </button>
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+            <a class="nav-cta" href="{% url 'register' %}">Create account</a>
+        </div>
+    </header>
 
-<div class="container">
-    <div class="login-box">
-        <h2>Login</h2>
-        
-       <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    
-    <!-- Login Button -->
-    <button type="submit">Login</button>
-    
-    <!-- Register Button -->
-    <button type="button" 
-            onclick="window.location.href='https://gold-shop-management-1.onrender.com/register/';" 
-            style="background: #ccc; color: #333; margin-top: 15px;">
-        Register
-    </button>
-</form>
+    <main class="hero">
+        <section class="hero-copy">
+            <div class="eyebrow">Welcome Back</div>
+            <h1>Run your gold shop from one calm workspace.</h1>
+            <p>
+                Track inventory, monitor daily activity, and move from counter work to reporting
+                without jumping between scattered screens.
+            </p>
+            <div class="feature-row">
+                <span class="feature-pill">Inventory overview</span>
+                <span class="feature-pill">Daily dashboard</span>
+                <span class="feature-pill">Fast staff access</span>
+            </div>
+        </section>
 
-    </div>
+        <section class="hero-panel">
+            <div class="panel-inner">
+                <div class="form-eyebrow">Workspace Login</div>
+                <h2>Enter your dashboard.</h2>
+                <p class="panel-text">
+                    Sign in to manage stock, updates, and daily operations from one place.
+                </p>
+
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+
+                    <button type="submit" class="submit-button">Login</button>
+                    <button type="button" class="secondary-button" onclick="window.location.href='{% url 'register' %}';">
+                        Register
+                    </button>
+                </form>
+
+                <p class="panel-footer">
+                    Need an account? <a href="{% url 'register' %}">Create one.</a>
+                </p>
+            </div>
+        </section>
+    </main>
 </div>
 
+<script>
+    (function () {
+        var storageKey = 'login-theme';
+        var body = document.body;
+        var toggle = document.getElementById('themeToggle');
+
+        function applyTheme(theme) {
+            var isDark = theme === 'dark';
+            body.classList.toggle('dark-mode', isDark);
+            toggle.setAttribute('aria-pressed', String(isDark));
+            toggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+        }
+
+        var savedTheme = localStorage.getItem(storageKey);
+        var systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        applyTheme(savedTheme || (systemPrefersDark ? 'dark' : 'light'));
+
+        toggle.addEventListener('click', function () {
+            var nextTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
+            localStorage.setItem(storageKey, nextTheme);
+            applyTheme(nextTheme);
+        });
+    })();
+</script>
 </body>
 </html>
