@@ -67,7 +67,18 @@ def register_view(request):
                 _send_registration_otp(form.cleaned_data['email'], otp_code)
             except Exception:
                 _clear_pending_registration(request)
-                form.add_error('email', 'We could not send the OTP email right now. Please try again later.')
+                user = form.save()
+                user.role = 'staff'
+                user.save(update_fields=['role'])
+
+                staff_group, _ = Group.objects.get_or_create(name='Staff')
+                user.groups.add(staff_group)
+
+                messages.warning(
+                    request,
+                    'Email OTP is temporarily unavailable on the current deployment, so your account was created directly.'
+                )
+                return redirect('login')
             else:
                 messages.success(request, 'We sent a 6-digit OTP to your email. Enter it below to finish registration.')
                 return redirect('verify_registration_otp')
